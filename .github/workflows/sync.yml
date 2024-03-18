@@ -20,7 +20,7 @@ jobs:
         if: ${{ env.SYNCED == 0 }}
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.GITHUP_TOKEN }}
+          github-token: ${{ secrets.ANY_TOKEN }}
           script: |
               await github.rest.actions.createWorkflowDispatch({
               owner: 'gordonchan',
@@ -33,7 +33,7 @@ jobs:
         if: ${{ env.SYNCED == 1 }}
         uses: Mattraks/delete-workflow-runs@v2
         with:
-          token: ${{ github.GITHUP_TOKEN }}
+          token: ${{ github.ANY_TOKEN }}
           repository: ${{ github.repository }}
           retain_days: 1
           keep_minimum_runs: 8
