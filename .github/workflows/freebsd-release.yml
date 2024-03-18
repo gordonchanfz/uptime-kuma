@@ -18,7 +18,7 @@ jobs:
         run: |
           git clone https://github.com/louislam/uptime-kuma.git 
           cd uptime-kuma
-          npm ci --production && npm run download-dist 
+          git checkout 1.22.0 && npm ci --production && npm run download-dist
           zip -r uptime-kuma.zip .
 
           
@@ -31,7 +31,7 @@ jobs:
 
     - name: Generate release tag
       id: tag
-      run: echo "release_tag=v0.0.3" >> $GITHUB_OUTPUT
+      run: echo "release_tag=v0.0.4" >> $GITHUB_OUTPUT
 
     - name: Create release
       uses: softprops/action-gh-release@v1
