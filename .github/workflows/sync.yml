@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: compare versions
         run: |
-          export REMOTEVERSION=$(wget -qO- https://github.com/gordonchanfz/uptime-kuma/tags | gawk -F '["v]' '/name/{print "v"$5;exit}')
+          export REMOTEVERSION=$(wget -qO- https://github.com/louislam/uptime-kuma/tags | gawk -F '["v]' '/name/{print "v"$5;exit}')
           export LOCALVERSION=$(curl --location --silent --fail --show-error "https://api.github.com/repos/gordonchanfz/uptime-kuma/releases/latest" | grep -oP '"tag_name":\s*"\K[^"]+')
           bash checkversion.sh
           
