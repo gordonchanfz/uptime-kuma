@@ -14,10 +14,9 @@ jobs:
         usesh: true
         release: 13.2
         prepare: |
-          pkg install -y node wget curl git bash gawk gsed
+          pkg install -y node wget curl git bash gawk gsed zip 
         run: |
-          export LATEST_APP=$(wget -qO- https://github.com/louislam/uptime-kuma/tags | gawk -F '["v]' '/name/{print "v"$5;exit}')
-          git clone -b $LATEST_APP https://github.com/louislam/uptime-kuma
+          git clone https://github.com/louislam/uptime-kuma.git
           cd uptime-kuma
           npm ci --production && npm run download-dist
           zip -r uptime-kuma.zip .
