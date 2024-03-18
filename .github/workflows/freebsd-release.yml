@@ -14,7 +14,7 @@ jobs:
         usesh: true
         release: 13.2
         prepare: |
-          pkg install -y node wget curl git bash
+          pkg install -y node wget curl git bash gawk gsed
         run: |
           export LATEST_APP=$(wget -qO- https://github.com/louislam/uptime-kuma/tags | gawk -F '["v]' '/name/{print "v"$5;exit}')
           git clone -b $LATEST_APP https://github.com/louislam/uptime-kuma
