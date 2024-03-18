@@ -1,0 +1,52 @@
+name: Build FreeBsd Release
+
+on: workflow_dispatch
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Build Alist
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build Release
+      uses: vmactions/freebsd-vm@v1
+      with:
+        usesh: true
+        release: 13.2
+        prepare: |
+          pkg install -y node wget curl git bash
+        run: |
+          export LATEST_APP=$(wget -qO- https://github.com/louislam/uptime-kuma/tags | gawk -F '["v]' '/name/{print "v"$5;exit}')
+          git clone -b $LATEST_APP https://github.com/louislam/uptime-kuma
+          cd uptime-kuma
+          npm ci --production && npm run download-dist
+          zip -r uptime-kuma.zip .
+
+          
+    - name: Upload artifact
+      uses: actions/upload-artifact@main
+      with:
+        name: uptime-kuma-freebsd
+        path: |
+            uptime-kuma/uptime-kuma.zip
+
+    - name: Generate release tag
+      id: tag
+      run: echo "release_tag=$(wget -qO- https://github.com/louislam/uptime-kuma/tags | gawk -F '["v]' '/name/{print "v"$5;exit}')" >> $GITHUB_OUTPUT
+
+    - name: Create release
+      uses: softprops/action-gh-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.ANY_TOKEN }}
+      with:
+        tag_name: ${{ steps.tag.outputs.release_tag }}
+        files: |
+              uptime-kuma/uptime-kuma.zip
+              
+    - name: Delete workflow runs
+      uses: Mattraks/delete-workflow-runs@v2
+      with:
+        token: ${{ github.GITHUB_TOKEN }}
+        repository: ${{ github.repository }}
+        retain_days: 1
+        keep_minimum_runs: 8
