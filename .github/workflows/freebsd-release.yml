@@ -3,9 +3,9 @@ name: Build FreeBsd Release
 on: workflow_dispatch
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
-    name: Build Alist
+    name: Build FreeBsd
     steps:
     - uses: actions/checkout@v4
     - name: Build Release
@@ -14,11 +14,11 @@ jobs:
         usesh: true
         release: 13.2
         prepare: |
-          pkg install -y node wget curl git bash gawk gsed zip 
+          pkg install -y node wget curl git bash gawk gsed zip www/npm
         run: |
-          git clone https://github.com/louislam/uptime-kuma.git
+          git clone https://github.com/louislam/uptime-kuma.git uptime-kuma
           cd uptime-kuma
-          npm ci --production && npm run download-dist
+          npm ci --production && npm run download-dist 
           zip -r uptime-kuma.zip .
 
           
@@ -27,7 +27,7 @@ jobs:
       with:
         name: uptime-kuma-freebsd
         path: |
-            uptime-kuma/uptime-kuma.zip
+            ./uptime-kuma.zip
 
     - name: Generate release tag
       id: tag
@@ -40,7 +40,7 @@ jobs:
       with:
         tag_name: ${{ steps.tag.outputs.release_tag }}
         files: |
-              uptime-kuma/uptime-kuma.zip
+              ./uptime-kuma.zip
               
     - name: Delete workflow runs
       uses: Mattraks/delete-workflow-runs@v2
