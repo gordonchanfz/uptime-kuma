@@ -23,7 +23,7 @@ jobs:
           github-token: ${{ secrets.ANY_TOKEN }}
           script: |
               await github.rest.actions.createWorkflowDispatch({
-              owner: 'gordonchan',
+              owner: 'gordonchanfz',
               repo: 'uptime-kuma',
               workflow_id: 'freebsd-release.yml',
               ref: 'main'
