@@ -18,7 +18,7 @@ jobs:
         run: |
           git clone https://github.com/louislam/uptime-kuma.git 
           cd uptime-kuma
-          git checkout 1.23.13 && npm ci --production && npm run download-dist
+          git checkout 1.22.0 && npm ci --production && npm run download-dist
           zip -r uptime-kuma.zip .
 
           
