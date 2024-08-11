@@ -14,6 +14,8 @@ jobs:
         usesh: true
         release: 13.2
         prepare: |
+          pkg update
+          pkg upgrade
           pkg install -y node wget curl git bash gawk gsed zip www/npm
         run: |
           git clone https://github.com/louislam/uptime-kuma.git 
